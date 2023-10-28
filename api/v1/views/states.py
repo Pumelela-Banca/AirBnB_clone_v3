@@ -42,12 +42,11 @@ def delete_state(state_id):
 @app_views.route("/states", methods=["POST"], strict_slashes=False)
 def create_state():
     '''add a state object'''
-    try:
-        data = request.get_json()
-    except Exception:
-        return make_response(jsonify({'error': "Not a JSON"}), 400)
-    if not data or 'name' not in data:
-        return make_response(jsonify({'error': "Missing name"}), 400)
+    data = request.get_json(silent=True)
+    if data is None:
+        abort(400, 'Not a JSON')
+    if not 'name' in data:
+        abort(400, 'Missing name')
     else:
         new_state = State(**data)
         new_state.save()
@@ -57,14 +56,12 @@ def create_state():
 @app_views.route("/states/<state_id>", methods=["PUT"], strict_slashes=False)
 def update_state(state_id):
     '''update a state object'''
+    data = request.get_json(silent=True)
+    if data is None:
+        abort(400, 'Not a JSON')
     if not storage.get('State', state_id):
         abort(404)
-    else:
-        st = storage.get('State', state_id)
-    try:
-        data = request.get_json()
-    except Exception:
-        return make_response(jsonify({'error': "Not a JSON"}), 400)
+    st = storage.get('State', state_id) 
     for att, val in data.items():
         if att != 'id' and att != 'created_at' and att != 'updated_at':
             setattr(st, att, val)
