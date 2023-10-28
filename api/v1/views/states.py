@@ -25,7 +25,8 @@ def retrieve_state(state_id):
     else:
         abort(404)
 
-@app_views.route("/states/<state_id>", 
+
+@app_views.route("/states/<state_id>",
                  methods=["DELETE"],
                  strict_slashes=False)
 def delete_state(state_id):
@@ -36,6 +37,7 @@ def delete_state(state_id):
         return make_response(jsonify({}), 200)
     else:
         abort(404)
+
 
 @app_views.route("/states", methods=["POST"], strict_slashes=False)
 def create_state():
@@ -48,8 +50,7 @@ def create_state():
         return make_response(jsonify({'error': "Missing name"}), 400)
     else:
         new_state = State(**data)
-        storage.new(new_state)
-        storage.save()
+        new_state.save()
         return make_response(jsonify(new_state.to_dict()), 201)
 
 
@@ -67,5 +68,5 @@ def update_state(state_id):
     for att, val in data.items():
         if att != 'id' and att != 'created_at' and att != 'updated_at':
             setattr(st, att, val)
-    storage.save()
+    st.save()
     return make_response(jsonify(st.to_dict()), 200)
