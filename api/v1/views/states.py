@@ -37,7 +37,7 @@ def delete_state(state_id):
         return make_response(jsonify({'error': "Not found"}), 404)
 
 
-@app_views.route("/states/", methods=["POST"])
+@app_views.route("/states", methods=["POST"])
 def add_state():
     '''add a state object'''
     try:
