@@ -1,8 +1,6 @@
 #!/usr/bin/python3
-
 """
-
-
+create a flask app
 """
 import sys
 sys.path.append('../..')
@@ -16,8 +14,8 @@ app =  Flask(__name__)
 app.register_blueprint(app_views)
 
 
-@app.teatdown_appcontext
-def tear_down():
+@app.teardown_appcontext
+def tear_down(exception=None):
     """
 
     """
