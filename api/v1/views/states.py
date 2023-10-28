@@ -43,9 +43,9 @@ def add_state():
     try:
         data = request.get_json()
     except Exception:
-        return make_response(jsonify("Not a JSON"), 404)
+        return make_response(jsonify({'error': "Not a JSON"}), 404)
     if not data or 'name' not in data:
-        return make_response(jsonify("Missing name"), 404)
+        return make_response(jsonify({'error': "Missing name"}), 404)
     else:
         new_state = State(name=data.get('name'))
         storage.new(new_state)
@@ -63,7 +63,7 @@ def update_state(state_id):
     try:
         data = request.get_json()
     except Exception:
-        return make_response(jsonify("Not a JSON"), 404)
+        return make_response(jsonify({'error': "Not a JSON"}), 404)
     for att, val in data.items():
         if att != 'id' and att != 'created_at' and att != 'updated_at':
             setattr(st, att, val)
