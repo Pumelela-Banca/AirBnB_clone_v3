@@ -8,7 +8,7 @@ from models import storage
 from models.state import State
 
 
-@app_views.route("/states")
+@app_views.route("/states", methods=["GET"])
 def retrieve_all_state():
     '''Retrieve all states objects in storage'''
     all_state_list = []
@@ -17,7 +17,7 @@ def retrieve_all_state():
     return jsonify(all_state_list)
 
 
-@app_views.route("/states/<state_id>")
+@app_views.route("/states/<state_id>", methods=["GET"])
 def retrieve_state(state_id):
     '''retrieve a specific object'''
     if storage.get('State', state_id):
