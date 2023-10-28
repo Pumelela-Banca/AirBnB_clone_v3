@@ -57,7 +57,7 @@ def add_state():
 def update_state(state_id):
     '''update a state object'''
     if not storage.get('State', state_id):
-        return make_response(jsonify('error': "Not found"), 404)
+        return make_response(jsonify({'error': "Not found"}), 404)
     else:
         st = storage.get('State', state_id)
     try:
