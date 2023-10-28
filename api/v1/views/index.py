@@ -15,12 +15,11 @@ def status():
     return jsonify({"status": "OK"})
 
 
-@app_views.route("/api/v1/stats")
+@app_views.route("/stats")
 def statistic():
     """
     Returns count for all classes
     """
-
     cls_dict = {
             "amenities": storage.count("Amenity"),
             "cities": storage.count("City"),
