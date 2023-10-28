@@ -38,7 +38,7 @@ def delete_state(state_id):
 
 
 @app_views.route("/states", methods=["POST"], strict_slashes=False)
-def add_state():
+def create_state():
     '''add a state object'''
     try:
         data = request.get_json()
@@ -47,7 +47,7 @@ def add_state():
     if not data or 'name' not in data:
         return make_response(jsonify({'error': "Missing name"}), 400)
     else:
-        new_state = State(name=data.get('name'))
+        new_state = State(**data)
         storage.new(new_state)
         storage.save()
         return make_response(jsonify(new_state.to_dict()), 201)
