@@ -2,7 +2,7 @@
 """
 Creates a route for status
 """
-import json
+from flask import jsonify
 from api.v1.views import app_views
 
 
@@ -11,4 +11,4 @@ def status():
     """
     Returns json
     """
-    return json.dumps({"status": "OK"})
+    return jsonify({"status": "OK"})
