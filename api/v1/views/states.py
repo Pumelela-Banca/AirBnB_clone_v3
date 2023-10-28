@@ -32,12 +32,12 @@ def delete_state(state_id):
     if storage.get('State', state_id):
         storage.delete(storage.get('State', state_id))
         storage.save()
-        return jsonify({}), 200
+        return make_response(jsonify({}), 200)
     else:
         return make_response(jsonify({'error': "Not found"}), 404)
 
 
-@app_views.route("/states", methods=["POST"])
+@app_views.route("/states/", methods=["POST"])
 def add_state():
     '''add a state object'''
     try:
