@@ -16,14 +16,12 @@ app.register_blueprint(app_views)
 
 @app.teardown_appcontext
 def tear_down(exception=None):
-    """
-
+    """ tear down function
     """
     storage.close()
 
 
 if __name__ == "__main__":
-
     if environ.get("HBNB_API_HOST"):
         _host = environ.get("HBNB_API_HOST")
     else:
@@ -32,5 +30,4 @@ if __name__ == "__main__":
         _port = environ.get("HBNB_API_PORT")
     else:
         _port = '5000'
-    
     app.run(host=_host, port=_port, threaded=True)
