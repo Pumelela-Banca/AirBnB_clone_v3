@@ -2,7 +2,7 @@
 """
 create a route for states
 """
-from flask import jsonify, make_response, request
+from flask import jsonify, make_response, request, abort
 from api.v1.views import app_views
 from models import storage
 from models.state import State
@@ -23,10 +23,11 @@ def retrieve_state(state_id):
     if storage.get('State', state_id):
         return jsonify(storage.get('State', state_id).to_dict())
     else:
-        return make_response(jsonify({'error': "Not found"}), 404)
+        abort(404)
 
-
-@app_views.route("/states/<state_id>", methods=["DELETE"], strict_slashes=False)
+@app_views.route("/states/<state_id>", 
+                 methods=["DELETE"],
+                 strict_slashes=False)
 def delete_state(state_id):
     '''delete a state object'''
     if storage.get('State', state_id):
@@ -34,8 +35,7 @@ def delete_state(state_id):
         storage.save()
         return make_response(jsonify({}), 200)
     else:
-        return make_response(jsonify({'error': "Not found"}), 404)
-
+        abort(404)
 
 @app_views.route("/states", methods=["POST"], strict_slashes=False)
 def create_state():
@@ -57,7 +57,7 @@ def create_state():
 def update_state(state_id):
     '''update a state object'''
     if not storage.get('State', state_id):
-        return make_response(jsonify({'error': "Not found"}), 404)
+        abort(404)
     else:
         st = storage.get('State', state_id)
     try:
