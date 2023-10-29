@@ -9,7 +9,7 @@ from models.user import User
 
 
 @app_views.route('/users', methods=['GET'], strict_slashes=False)
-def get_user():
+def get_users():
     """
     Gets all users
     """
@@ -21,3 +21,12 @@ def get_user():
     return jsonify(list_all_users)
 
 
+@app_views.route('/user/<user_id>', methods=['GET'], strict_slashes=False)
+def get_user(user_id):
+    """
+    gets specific user
+    """
+    user = storage.get(User, user_id)
+    if not user:
+        abort(404)
+    return jsonify(user.to_dict())
