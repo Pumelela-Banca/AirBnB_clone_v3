@@ -10,7 +10,7 @@ from models.place import Place
 from models.user import User
 
 
-@app_views.route('/places/<place_id>/reviews',
+@app_views.route('places/<place_id>/reviews',
                  methods=['GET'], strict_slashes=False)
 def get_reviews(place_id):
     """
@@ -21,7 +21,7 @@ def get_reviews(place_id):
         abort(404)
     all_reviews = []
     for rev in place.reviews:
-        all_reviews.append(rev)
+        all_reviews.append(rev.to_dict())
     return jsonify(all_reviews)
 
 
