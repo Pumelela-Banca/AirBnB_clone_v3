@@ -57,17 +57,14 @@ def create_place(city_id):
         abort(400, 'Missing name')
     if 'user_id' not in data:
         abort(400, 'Missing user_id')
-    else:
-        if not storage.get(
-                           "City",
-                           city_id) or not storage.get(
-                                                       "User",
-                                                       data['user_id']):
-            abort(404)
-        data['city_id'] = city_id
-        new_place = Place(**data)
-        new_place.save()
-        return make_response(jsonify(new_place.to_dict()), 201)
+    if storage.get("City", city_id) is None:
+        abort(404)
+    if storage.get("User", data['user_id']) is None:
+        abort(404)
+    data['city_id'] = city_id
+    new_place = Place(**data)
+    new_place.save()
+    return make_response(jsonify(new_place.to_dict()), 201)
 
 
 @app_views.route("places/<place_id>", methods=["PUT"],
@@ -79,9 +76,9 @@ def update_place(place_id):
         abort(400, 'Not a JSON')
     if not storage.get("Place", place_id):
         abort(404)
-    pl = storage.get("Place", amenity_id)
+    pl = storage.get("Place", place_id)
     for att, val in data.items():
         if att not in ['id', 'created_at', 'updated_at', 'user_id', 'city_id']:
-            setattr(am, att, val)
+            setattr(pl, att, val)
     pl.save()
     return make_response(jsonify(pl.to_dict()), 200)
