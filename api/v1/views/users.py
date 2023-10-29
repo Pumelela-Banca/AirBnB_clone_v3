@@ -13,7 +13,7 @@ def get_users():
     """
     Gets all users
     """
-    users = storage.all(User).values()
+    users = storage.all('User').values()
     list_all_users = []
     for user in users:
         list_all_users.append(user.to_dict())
@@ -25,7 +25,7 @@ def get_user(user_id):
     """
     gets specific user
     """
-    user = storage.get(User, user_id)
+    user = storage.get('User', user_id)
     if not user:
         abort(404)
     return jsonify(user.to_dict())
@@ -36,7 +36,7 @@ def delete_user(user_id):
     """
     Deletes specific user
     """
-    user = storage.get(User, user_id)
+    user = storage.get('User', user_id)
     if not user:
         abort(404)
 
@@ -68,7 +68,7 @@ def put_user(user_id):
     """
     updates user
     """
-    user = storage.get(User, user_id)
+    user = storage.get('User', user_id)
     data = request.get_json(silent=True)
     if not user:
         abort(404)
