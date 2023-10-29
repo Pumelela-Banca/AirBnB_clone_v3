@@ -50,14 +50,13 @@ def post_user():
     """
     creates new user
     """
-    data = request.get_json()
+    data = request.get_json(silent=True)
     if not data:
         abort(400, "Not a JSON")
     if "email" not in data:
         abort(400, "Missing email")
     if "password" not in data:
         abort(400, "Missing password")
-
     new = User(**data)
     new.save()
     return make_response(jsonify(new.to_dict()), 201)
@@ -70,7 +69,7 @@ def put_user(user_id):
     updates user
     """
     user = storage.get(User, user_id)
-    data = request.get_json()
+    data = request.get_json(silent=True)
     if not user:
         abort(404)
     if not data:
