@@ -33,7 +33,7 @@ def retrieve_place(place_id):
         abort(404)
 
 
-@app_views.route("places/<place_id>",
+@app_views.route("/places/<place_id>",
                  methods=["DELETE"],
                  strict_slashes=False)
 def delete_place(place_id):
@@ -68,7 +68,7 @@ def create_place(city_id):
     return make_response(jsonify(new_place.to_dict()), 201)
 
 
-@app_views.route("places/<place_id>", methods=["PUT"],
+@app_views.route("/places/<place_id>", methods=["PUT"],
                  strict_slashes=False)
 def update_place(place_id):
     '''update a place object'''
