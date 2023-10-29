@@ -36,7 +36,7 @@ def delete_user(user_id):
     """
     Deletes specific user
     """
-    user = storage.get(User, user_id)
+    user = storage.get(User, str(user_id))
 
     if not user:
         abort(404)
@@ -58,7 +58,6 @@ def post_user():
         abort(400, "Missing email")
     if "password" not in data:
         abort(400, "Missing password")
-
     new = User(**data)
     new.save()
     return make_response(jsonify(new.to_dict()), 201)
@@ -70,7 +69,7 @@ def put_user(user_id):
     """
     updates user
     """
-    user = storage.get(User, user_id)
+    user = storage.get(User, str(user_id))
     data = request.get_json()
     if not user:
         abort(404)
