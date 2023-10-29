@@ -76,13 +76,13 @@ def put_city(city_id):
     """
     update city
     """
-    city = storage.get("City", city_id)
-    if city is None:
-        abort(404)
-    if not request.get_json():
-        abort(400, "Not a JSON")
-
     data = request.get_json()
+    city = storage.get("City", city_id)
+    if data is None:
+        abort(404, "Not a JSON")
+    if not city:
+        abort(404)
+
     skip = ["id", "state_id", "created_at", "updated_at"]
     for k, v in data.items():
         if k not in skip:
