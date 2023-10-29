@@ -30,3 +30,18 @@ def get_user(user_id):
     if not user:
         abort(404)
     return jsonify(user.to_dict())
+
+
+@app_views.route('/user/<user_id>', methods=['DELETE'], strict_slashes=False)
+def delete_user(user_id):
+    """
+    Deletes specific user
+    """
+    user = storage.get(User, user_id)
+
+    if not user:
+        abort(404)
+
+    storage.delete(user)
+    storage.save()
+    return make_response(jsonify({}), 200)
