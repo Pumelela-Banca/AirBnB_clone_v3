@@ -13,7 +13,7 @@ def get_users():
     """
     Gets all users
     """
-    all_users = storage.all(User).values()
+    all_users = storage.all(User)
     list_all_users = []
     for user in all_users:
         list_all_users.append(user.to_dict())
