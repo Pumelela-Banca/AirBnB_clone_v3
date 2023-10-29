@@ -68,12 +68,12 @@ def put_user(user_id):
     """
     updates user
     """
-    user = storage.get('User', user_id)
     data = request.get_json(silent=True)
-    if not user:
-        abort(404)
     if not data:
         abort(400, "Not a JSON")
+    user = storage.get('User', user_id)
+    if not user:
+        abort(404)
     skip = ['id', 'email', 'created_at', 'updated_at']
     for k, v in data.items():
         if k not in skip:
