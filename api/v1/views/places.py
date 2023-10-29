@@ -79,7 +79,7 @@ def update_place(place_id):
         abort(404)
     pl = storage.get("Place", place_id)
     for att, val in data.items():
-        if not att in ['id', 'created_at', 'updated_at', 'user_id', 'city_id']:
+        if att != 'id' and att != 'created_at' and att != 'updated_at' and att != 'user_id' and att !=  'city_id':
             setattr(pl, att, val)
     pl.save()
     return make_response(jsonify(pl.to_dict()), 200)
