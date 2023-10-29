@@ -31,7 +31,7 @@ def get_review(review_id):
     """
     gets specific review
     """
-    review = storage.get((Review, review_id))
+    review = storage.get(Review, review_id)
     if not review:
         abort(404)
     return jsonify(review.to_dict())
@@ -43,8 +43,8 @@ def delete_review(review_id):
     """
     Delete review_id
     """
-    review = storage.get((Review, review_id))
-    data = request.get_json()
+    review = storage.get(Review, review_id)
     if not review:
         abort(404)
-    
+    storage.delete(review)
+    return make_response(jsonify({}), 200)
