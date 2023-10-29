@@ -9,7 +9,7 @@ from models.state import State
 from models.city import City
 
 
-@app_views.route("/states/<state_id>/cities", strict_slashes=False)
+@app_views.route("/states/<state_id>/cities", methods=['POST'], strict_slashes=False)
 def get_all_city(id_state):
     """
     gets all city objects
@@ -23,7 +23,7 @@ def get_all_city(id_state):
     return jsonify(list_city)
 
 
-@app_views.route('/cities/<city_id>/', strict_slashes=False)
+@app_views.route('/cities/<city_id>/', methods=['POST'], strict_slashes=False)
 def get_city(id_city):
     """
     gets city
