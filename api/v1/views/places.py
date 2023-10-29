@@ -13,13 +13,13 @@ from models.city import City
                  strict_slashes=False)
 def retrieve_all_places_in_city(city_id):
     '''Retrieve all places objects linked to the city'''
-    if not storage.get("City", city_id):
+    allplaces = storage.get("City", str(city_id)).places
+    if allplaces is None:
         abort(404)
     else:
         all_city_places_list = []
-        for k, v in storage.all("Place").items():
-            if city_id == v.city_id:
-                all_city_places_list.append(v.to_dict())
+        for v in allplaces:
+            all_city_places_list.append(v.to_dict())
         return jsonify(all_city_places_list)
 
 
@@ -79,7 +79,7 @@ def update_place(place_id):
         abort(404)
     pl = storage.get("Place", place_id)
     for att, val in data.items():
-        if att != 'id' and att != 'created_at' and att != 'updated_at' and att != 'user_id' and att !=  'city_id':
+        if att not in ["id", "user_id", "city_id", "created_at", "updated_at"]:
             setattr(pl, att, val)
     pl.save()
     return make_response(jsonify(pl.to_dict()), 200)
