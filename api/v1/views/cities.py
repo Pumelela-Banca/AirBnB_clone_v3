@@ -18,7 +18,7 @@ def get_all_city(id_state):
     state = storage.get("State", id_state)
     if state is None:
         abort(404)
-    for city in state.cities:
+    for city in storage.all(City).values():
         list_city.append(city.to_dict())
     return jsonify(list_city)
 
@@ -30,7 +30,7 @@ def get_city(city_id):
     gets city
     """
     city = storage.get("City", city_id)
-    if city is None:
+    if not city:
         abort(404)
     return jsonify(city.to_dict())
 
@@ -44,7 +44,7 @@ def delete_city(city_id):
     city = storage.get("City", city_id)
     if not city:
         abort(404)
-    city.delete()
+    storage.delete(city)
     storage.save()
     return make_response(jsonify({}), 200)
 
