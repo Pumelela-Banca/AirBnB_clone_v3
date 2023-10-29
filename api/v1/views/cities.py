@@ -55,7 +55,7 @@ def post_city(state_id):
     """
     Create new city
     """
-    data = request.get_json()
+    data = request.get_json(silent=True)
     if data is None:
         abort(400, "Not a JSON")
     if "name" not in request.get_json():
@@ -71,7 +71,7 @@ def put_city(city_id):
     """
     update city
     """
-    data = request.get_json()
+    data = request.get_json(silent=True)
     city = storage.get("City", city_id)
     if data is None:
         abort(404, "Not a JSON")
