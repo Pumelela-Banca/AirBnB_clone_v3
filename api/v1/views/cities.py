@@ -78,8 +78,8 @@ def put_city(city_id):
     """
     data = request.get_json(silent=True)
     city = storage.get("City", city_id)
-    if data is None:
-        abort(404, "Not a JSON")
+    if not data:
+        abort(400, "Not a JSON")
     if not city:
         abort(404)
 
