@@ -87,5 +87,5 @@ def put_city(city_id):
     for k, v in data.items():
         if k not in skip:
             setattr(city, k, v)
-    storage.save()
+    city.save()
     return make_response(jsonify(city.to_dict()), 200)

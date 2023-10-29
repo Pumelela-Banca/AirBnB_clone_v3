@@ -75,7 +75,7 @@ def put_user(user_id):
         abort(400, "Not a JSON")
     skip = ['id', 'email', 'created_at', 'updated_at']
     for k, v in data.items():
-        if k in skip:
+        if k not in skip:
             setattr(user, k, v)
-    storage.save()
+    user.save()
     return make_response(jsonify(user.to_dict()), 200)
