@@ -42,7 +42,7 @@ def delete_city(city_id):
     deletes city object
     """
     city = storage.get("City", city_id)
-    if city is None:
+    if not city:
         abort(404)
     city.delete()
     storage.save()
