@@ -5,7 +5,6 @@ create a route for cities
 from flask import jsonify, make_response, request, abort
 from api.v1.views import app_views
 from models import storage
-from models.state import State
 from models.city import City
 
 
@@ -30,7 +29,7 @@ def get_city(id_city):
     """
     gets city
     """
-    city = storage.get(City, id_city)
+    city = storage.get("City", id_city)
     if city is None:
         abort(404)
     return jsonify(city.to_dict())
