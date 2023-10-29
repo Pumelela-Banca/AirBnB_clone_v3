@@ -57,9 +57,9 @@ def post_user():
         abort(400, "Missing email")
     if "password" not in data:
         abort(400, "Missing password")
-    new = User(**data)
-    new.save()
-    return make_response(jsonify(new.to_dict()), 201)
+    new_user = User(**data)
+    new_user.save()
+    return make_response(jsonify(new_user.to_dict()), 201)
 
 
 @app_views.route('/users/<user_id>',
