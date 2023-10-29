@@ -13,12 +13,12 @@ from models.city import City
                  strict_slashes=False)
 def retrieve_all_places_in_city(city_id):
     '''Retrieve all places objects linked to the city'''
-    allplaces = storage.get("City", str(city_id)).places
-    if allplaces is None:
+    city = storage.get("City", str(city_id))
+    if city is None:
         abort(404)
     else:
         all_city_places_list = []
-        for v in allplaces:
+        for v in city.places:
             all_city_places_list.append(v.to_dict())
         return jsonify(all_city_places_list)
 
@@ -52,7 +52,7 @@ def delete_place(place_id):
 def create_place(city_id):
     '''add a place object'''
     data = request.get_json(silent=True)
-    if data is None:
+    if not data:
         abort(400, 'Not a JSON')
     if 'user_id' not in data:
         abort(400, 'Missing user_id')
