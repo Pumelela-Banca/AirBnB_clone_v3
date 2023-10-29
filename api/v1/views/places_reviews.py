@@ -93,5 +93,5 @@ def put_review(review_id):
     for k, v in data.items():
         if k not in skip:
             setattr(review, k, v)
-    storage.save()
+    review.save()
     return make_response(jsonify(review.to_dict()), 200)
