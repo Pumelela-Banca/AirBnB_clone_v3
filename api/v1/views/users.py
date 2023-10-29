@@ -63,3 +63,21 @@ def post_user():
     new = User(**data)
     new.save()
     return make_response(jsonify(new.to_dict()), 201)
+
+
+@app_views.route('/users/<user_id>',
+                 methods=['PUT'], strict_slashes=False)
+def put_user(user_id):
+    """
+    updates user
+    """
+    user = storage.get(User, user_id)
+    data = request.get_json()
+    if not user:
+        abort(400, "Not a JSON")
+    skip = ['id', 'email', 'created_at', 'updated_at']
+    for k, v in data.items():
+        if k in skip:
+            setattr(user, k, v)
+    storage.save()
+    return make_response(jsonify(user.to_dict()), 200)
