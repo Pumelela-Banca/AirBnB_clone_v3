@@ -75,3 +75,23 @@ def post_review(place_id):
     new_rev = Review(**data)
     new_rev.save()
     return make_response(jsonify(new_rev.to_dict()), 201)
+
+
+@app_views.route('/reviews/<review_id>',
+                 methods=['PUT'], strict_slashes=False)
+def put_review(review_id):
+    """
+    updates a review
+    """
+    review = storage.get(Review, review_id)
+    data = request.get_json()
+    if not review:
+        abort(404)
+    if not data:
+        abort(400, "Not a JSON")
+    skip = ['id', 'email', 'created_at', 'updated_at']
+    for k, v in data.items():
+        if k not in skip:
+            setattr(review, k, v)
+    storage.save()
+    return make_response(jsonify(review.to_dict()), 200)
