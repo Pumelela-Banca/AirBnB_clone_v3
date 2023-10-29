@@ -57,7 +57,7 @@ def post_city(state_id):
     """
     state = storage.get("State", state_id)
     if state is None:
-        abort(404, "Not a JSON")
+        abort(404)
     if not request.get_json():
         abort(400, "Not a JSON")
     if "name" not in request.get_json():
@@ -85,8 +85,7 @@ def put_city(city_id):
     data = request.get_json()
     skip = ["id", "state_id", "created_at", "updated_at"]
     for k, v in data.items():
-        if k in skip:
-            continue
-        setattr(city, k, v)
-    city.save()
+        if k not in skip:
+            setattr(city, k, v)
+    storage.save()
     return make_response(jsonify(city.to_dict()), 200)
