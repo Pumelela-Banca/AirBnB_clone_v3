@@ -55,3 +55,11 @@ def post_user():
     data = request.get_json()
     if not data:
         abort(400, "Not a JSON")
+    if "email" not in data:
+        abort(400, "Missing email")
+    if "password" not in data:
+        abort(400, "password")
+
+    new = User(**data)
+    new.save()
+    return make_response(jsonify(new.to_dict()), 201)
