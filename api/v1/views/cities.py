@@ -10,12 +10,12 @@ from models.city import City
 
 @app_views.route("/states/<state_id>/cities",
                  methods=['GET'], strict_slashes=False)
-def get_all_city(id_state):
+def get_all_city(state_id):
     """
     gets all city objects
     """
     list_city = []
-    state = storage.get("State", id_state)
+    state = storage.get("State", state_id)
     if state is None:
         abort(404)
     for city in storage.all(City).values():
@@ -23,7 +23,7 @@ def get_all_city(id_state):
     return jsonify(list_city)
 
 
-@app_views.route('/cities/<city_id>/',
+@app_views.route('/cities/<city_id>',
                  methods=['GET'], strict_slashes=False)
 def get_city(city_id):
     """

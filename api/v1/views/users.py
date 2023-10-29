@@ -52,4 +52,6 @@ def post_user():
     """
     creates new user
     """
-    pass
+    data = request.get_json()
+    if not data:
+        abort(400, "Not a JSON")
