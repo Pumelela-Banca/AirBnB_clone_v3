@@ -18,7 +18,7 @@ def get_all_city(id_state):
     state = storage.get(State, id_state)
     if not state:
         abort(404)
-    for city in state.cites:
+    for city in state.cities:
         list_city.append(city.to_dict())
     return jsonify(list_city)
 
@@ -43,7 +43,7 @@ def delete_city(city_id):
     city = storage.get(City, city_id)
     if not city:
         abort(404)
-    storage.delete(city)
+    city.delete()
     storage.save()
     return make_response(jsonify({}), 200)
 
@@ -79,7 +79,7 @@ def put_city(city_id):
     if not city:
         abort(404)
     if not request.get_json():
-        abort(400, description="Not a JSON")
+        abort(400, "Not a JSON")
 
     data = request.get_json()
     skip = ["id", "state_id", "created_at", "updated_at"]
