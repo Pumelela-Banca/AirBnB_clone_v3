@@ -57,7 +57,7 @@ def post_user():
     if "email" not in data:
         abort(400, "Missing email")
     if "password" not in data:
-        abort(400, "password")
+        abort(400, "Missing password")
 
     new = User(**data)
     new.save()
