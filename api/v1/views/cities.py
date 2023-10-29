@@ -6,6 +6,7 @@ from flask import jsonify, make_response, request, abort
 from api.v1.views import app_views
 from models import storage
 from models.city import City
+from models.state import State
 
 
 @app_views.route("/states/<state_id>/cities",
@@ -15,10 +16,10 @@ def get_all_city(state_id):
     gets all city objects
     """
     list_city = []
-    state = storage.get("State", state_id)
-    if state is None:
+    state = storage.get(State, state_id)
+    if not state:
         abort(404)
-    for city in storage.all(City).values():
+    for city in state.cities:
         list_city.append(city.to_dict())
     return jsonify(list_city)
 
