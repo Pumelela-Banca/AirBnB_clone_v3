@@ -124,19 +124,21 @@ def place_serach():
                 for pl in pls:
                     res.append(pl)
     res_amenity = []
+    flag_am = 0
     if data.get('amenities') and len(data.get('amenities')) > 0:
+        flag_am = 1
         for amenity_id in data.get('amenities'):
-                amenity = storage.get('Amenity', amenity_id)
-                if len(res) == 0:
-                    for pl in storage.all('Place').values():
-                        if amenity.place_id == pl.id:
-                            res_amenity.append(pl)
-                else:
-                    for pl in res:
-                        if amenity in pl.amenities:
-                            res_amenity.append(pl)
+            amenity = storage.get('Amenity', amenity_id)
+            if len(res) == 0:
+                for pl in storage.all('Place').values():
+                    if amenity in pl.amenities:
+                        res_amenity.append(pl)
+            else:
+                for pl in res:
+                    if amenity in pl.amenities:
+                        res_amenity.append(pl)
     final_result = []
-    if len(res_amenity) > 0:
+    if flag_am == 1:
         for pl in res_amenity:
             final_result.append(pl.to_dict())
     else:

@@ -56,6 +56,7 @@ def post_place_amenity(place_id, amenity_id):
     if not amenity:
         abort(404)
     if amenity in place.amenities:
+        amenity.place_id = place_id
         return make_response(jsonify(amenity.to_dict()), 200)
     else:
         amenity.place_id = place_id
