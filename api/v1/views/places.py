@@ -83,3 +83,64 @@ def update_place(place_id):
             setattr(pl, att, val)
     pl.save()
     return make_response(jsonify(pl.to_dict()), 200)
+
+
+@app_views.route("/places_search", methods=["POST"],
+                 strict_slashes=False)
+def place_serach():
+    data = request.get_json(silent=True)
+    if data is None:
+        abort(400, 'Not a JSON')
+    if len(data.keys()) == 0:
+        all_places_list = []
+        for v in storage.all('Place').values():
+            all_places_list.append(v.to_dict())
+        return jsonify(all_places_list)
+    flag = 0
+    for val in data.values():
+        if len(val) != 0:
+            flag = 1
+            break
+    if flag == 0:
+        all_places_list = []
+        for v in storage.all('Place').values():
+            all_places_list.append(v.to_dict())
+        return jsonify(all_places_list)
+    res = []
+    if data.get('states') and len(data.get('states')) > 0:
+        for state_id in data.get('states'):
+            st = storage.get('State', state_id)
+            if st:
+                state_cities = st.cities
+                for ct in state_cities:
+                    pls = ct.places
+                    for pl in pls:
+                        res.append(pl)
+    if data.get('cities') and len(data.get('cities')) > 0:
+        for city_id in data.get('cities'):
+            ct = storage.get('City', city_id)
+            if ct:
+                pls = ct.places
+                for pl in pls:
+                    res.append(pl)
+    if data.get('amenities') and len(data.get('amenities')) > 0:
+        if len(res) == 0:
+            res_amenity = []
+            for amenity_id in data.get('amenities'):
+                amenity = storage.get('Amenity', amenity_id)
+                if len(res) == 0:
+                    for pl in storage.all('Place').values():
+                        if amenity in pl.amenities:
+                            res_amenity.append(pl)
+                else:
+                    for pl in res:
+                        if amenity in pl.amenities:
+                            res_amenity.append(pl)
+    final_result = []
+    if res_amenity:
+        for pl in res_amenity:
+            final_result.append(pl.to_dict())
+    else:
+        for pl in res:
+            final_result.append(pl.to_dict())
+    return make_response(jasonify(final_result))
