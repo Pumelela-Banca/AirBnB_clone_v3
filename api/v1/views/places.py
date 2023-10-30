@@ -125,13 +125,12 @@ def place_serach():
     res_amenity = []
     for amenity_id in amenities:
         amenity = storage.get('Amenity', amenity_id)
-        if amenity:
-            flag_am = 1
-            if not len(res):
-                res = storage.all('Place').values()
-            for pl in res:
-                if amenity in pl.amenities:
-                    res_amenity.append(pl)
+        flag_am = 1
+        if not len(res):
+            res = storage.all('Place').values()
+        for pl in res:
+            if amenity in pl.amenities:
+                res_amenity.append(pl)
     final_result = []
     if flag_am == 1:
         for pl in res_amenity:
