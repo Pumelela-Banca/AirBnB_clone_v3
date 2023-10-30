@@ -135,8 +135,8 @@ def place_serach():
     final_result = []
     if flag_am == 1:
         for pl in res_amenity:
-            final_result.append(pl.to_dict().pop('amenities', None))
+            final_result.append(pl.to_dict())
     else:
         for pl in res:
-            final_result.append(pl.to_dict().pop('amenities', None))
+            final_result.append(pl.to_dict())
     return make_response(jsonify(final_result), 200)
