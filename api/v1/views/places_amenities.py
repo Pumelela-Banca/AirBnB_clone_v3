@@ -59,4 +59,5 @@ def post_place_amenity(place_id, amenity_id):
     if amenity.place_id == place_id:
         return make_response(jsonify(amenity.to_dict()), 200)
     else:
+        amenity.place_id = place_id
         return make_response(jsonify(amenity.to_dict()), 201)
