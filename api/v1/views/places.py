@@ -127,7 +127,7 @@ def place_serach():
         amenity = storage.get('Amenity', amenity_id)
         if amenity:
             flag_am = 1
-            if not res:
+            if not len(res):
                 res = storage.all('Place').values()
             for pl in res:
                 if amenity in pl.amenities:
@@ -135,8 +135,8 @@ def place_serach():
     final_result = []
     if flag_am == 1:
         for pl in res_amenity:
-            final_result.append(pl.to_dict())
+            final_result.append(pl.to_dict().pop('amenities', None))
     else:
         for pl in res:
-            final_result.append(pl.to_dict())
+            final_result.append(pl.to_dict().pop('amenities', None))
     return make_response(jsonify(final_result), 200)
