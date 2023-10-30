@@ -55,7 +55,7 @@ def post_place_amenity(place_id, amenity_id):
     amenity = storage.get(Amenity, amenity_id)
     if not amenity:
         abort(404)
-    if amenity.place_id == place_id:
+    if amenity in place.amenities:
         return make_response(jsonify(amenity.to_dict()), 200)
     else:
         amenity.place_id = place_id
