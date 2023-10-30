@@ -108,33 +108,31 @@ def place_serach():
             all_places_list.append(v.to_dict())
         return jsonify(all_places_list)
     res = []
-    states = data.get('states', None)
-    cities = data.get('cities', None)
-    amenities = data.get('amenities', None)
-    if states:
-        for state_id in data.get('states'):
-            st = storage.get('State', state_id)
-            if st:
-                state_cities = st.cities
-                for ct in state_cities:
-                    pls = ct.places
-                    for pl in pls:
-                        if pl not in res:
-                            res.append(pl)
-    if cities:
-        for city_id in data.get('cities'):
-            ct = storage.get('City', city_id)
-            if ct:
-                pls = ct.places
+    states = data.get('states', [])
+    cities = data.get('cities', [])
+    amenities = data.get('amenities', [])
+    for state_id in states:
+        state = storage.get('State', state_id)
+        if state:
+            state_cities = state.cities
+            for city in state_cities:
+                pls = city.places
                 for pl in pls:
                     if pl not in res:
                         res.append(pl)
+    for city_id in cities:
+        city = storage.get('City', city_id)
+        if city:
+            pls = city.places
+            for pl in pls:
+                if pl not in res:
+                    res.append(pl)
     flag_am = 0
-    if amenities:
-        res_amenity = []
-        flag_am = 1
-        for amenity_id in data.get('amenities'):
-            amenity = storage.get('Amenity', amenity_id)
+    res_amenity = []
+    for amenity_id in amenities:
+        amenity = storage.get('Amenity', amenity_id)
+        if amenity:
+            flag_am = 1
             if not res:
                 res = storage.all('Place').values()
             for pl in res:
