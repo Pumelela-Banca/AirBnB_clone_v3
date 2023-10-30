@@ -115,14 +115,16 @@ def place_serach():
                 for ct in state_cities:
                     pls = ct.places
                     for pl in pls:
-                        res.append(pl)
+                        if pl not in res:
+                            res.append(pl)
     if data.get('cities') and len(data.get('cities')) > 0:
         for city_id in data.get('cities'):
             ct = storage.get('City', city_id)
             if ct:
                 pls = ct.places
                 for pl in pls:
-                    res.append(pl)
+                    if pl not in res:
+                        res.append(pl)
     res_amenity = []
     flag_am = 0
     if data.get('amenities') and len(data.get('amenities')) > 0:
