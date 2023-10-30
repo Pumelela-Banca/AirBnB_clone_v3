@@ -90,7 +90,7 @@ def update_place(place_id):
 def place_serach():
     """search places"""
     data = request.get_json(silent=True)
-    if data is None:
+    if not data:
         abort(400, 'Not a JSON')
     if data and len(data):
         states = data.get('states', [])
