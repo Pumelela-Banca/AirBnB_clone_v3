@@ -107,7 +107,11 @@ def place_serach():
             all_places_list.append(v.to_dict())
         return jsonify(all_places_list)
     res = []
-    if data.get('states') and len(data.get('states')) > 0:
+    states = data.get('states', None)
+    cities = data.get('cities', None)
+    amenities = data.get('amenities', None)
+    
+    if states:
         for state_id in data.get('states'):
             st = storage.get('State', state_id)
             if st:
@@ -117,7 +121,7 @@ def place_serach():
                     for pl in pls:
                         if pl not in res:
                             res.append(pl)
-    if data.get('cities') and len(data.get('cities')) > 0:
+    if cities:
         for city_id in data.get('cities'):
             ct = storage.get('City', city_id)
             if ct:
@@ -125,25 +129,22 @@ def place_serach():
                 for pl in pls:
                     if pl not in res:
                         res.append(pl)
-    res_amenity = []
     flag_am = 0
-    if data.get('amenities') and len(data.get('amenities')) > 0:
+    if amenities:
+        res_amenity = []
         flag_am = 1
         for amenity_id in data.get('amenities'):
             amenity = storage.get('Amenity', amenity_id)
-            if len(res) == 0:
-                for pl in storage.all('Place').values():
-                    if amenity in pl.amenities:
-                        res_amenity.append(pl)
-            else:
-                for pl in res:
-                    if amenity in pl.amenities:
-                        res_amenity.append(pl)
+            if not res:
+                res = storage.all('Place').values()
+            for pl in res:
+                if amenity in pl.amenities:
+                    res_amenity.append(pl)
     final_result = []
     if flag_am == 1:
         for pl in res_amenity:
-            final_result.append(pl.to_dict())
+            final_result.append(pl.to_dict().pop('amenities', None))
     else:
         for pl in res:
-            final_result.append(pl.to_dict())
+            final_result.append(pl.to_dict().pop('amenities', None))
     return make_response(jsonify(final_result), 200)
