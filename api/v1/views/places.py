@@ -143,4 +143,4 @@ def place_serach():
     else:
         for pl in res:
             final_result.append(pl.to_dict())
-    return make_response(jasonify(final_result))
+    return make_response(jasonify(final_result), 200)
