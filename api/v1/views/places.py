@@ -88,6 +88,7 @@ def update_place(place_id):
 @app_views.route("/places_search", methods=["POST"],
                  strict_slashes=False)
 def place_serach():
+    """search place"""
     data = request.get_json(silent=True)
     if data is None:
         abort(400, 'Not a JSON')
@@ -110,7 +111,6 @@ def place_serach():
     states = data.get('states', None)
     cities = data.get('cities', None)
     amenities = data.get('amenities', None)
-    
     if states:
         for state_id in data.get('states'):
             st = storage.get('State', state_id)
