@@ -92,25 +92,19 @@ def place_serach():
     data = request.get_json(silent=True)
     if data is None:
         abort(400, 'Not a JSON')
-    if len(data.keys()) == 0:
+    if data and len(data):
+        states = data.get('states', [])
+        cities = data.get('cities', [])
+        amenities = data.get('amenities', [])
+    if not data or not len(data) or (
+            not len(states) and
+            not len(cities) and
+            not len(amenities)):
         all_places_list = []
         for v in storage.all('Place').values():
             all_places_list.append(v.to_dict())
-        return jsonify(all_places_list)
-    flag = 0
-    for val in data.values():
-        if len(val) != 0:
-            flag = 1
-            break
-    if flag == 0:
-        all_places_list = []
-        for v in storage.all('Place').values():
-            all_places_list.append(v.to_dict())
-        return jsonify(all_places_list)
+        return make_response(jsonify(all_places_list), 200)
     res = []
-    states = data.get('states', [])
-    cities = data.get('cities', [])
-    amenities = data.get('amenities', [])
     for state_id in states:
         state = storage.get('State', state_id)
         if state:
