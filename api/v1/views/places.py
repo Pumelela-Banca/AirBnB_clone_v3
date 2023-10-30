@@ -123,9 +123,9 @@ def place_serach():
                 pls = ct.places
                 for pl in pls:
                     res.append(pl)
+    res_amenity = []
     if data.get('amenities') and len(data.get('amenities')) > 0:
         if len(res) == 0:
-            res_amenity = []
             for amenity_id in data.get('amenities'):
                 amenity = storage.get('Amenity', amenity_id)
                 if len(res) == 0:
@@ -137,10 +137,10 @@ def place_serach():
                         if amenity in pl.amenities:
                             res_amenity.append(pl)
     final_result = []
-    if res_amenity:
+    if len(res_amenity) != 0:
         for pl in res_amenity:
             final_result.append(pl.to_dict())
     else:
         for pl in res:
             final_result.append(pl.to_dict())
-    return make_response(jasonify(final_result), 200)
+    return make_response(jsonify(final_result), 200)
